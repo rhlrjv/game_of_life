@@ -2,14 +2,21 @@ require 'pry'
 require_relative '../game_of_life.rb'
 
 RSpec.describe GameOfLife do
-  describe "#initialize" do
-    it "assigns @board to parsed input file" do
+  describe ".from_file" do
+    it "returns a GameOfLife instance based on grid in input file" do
       filename = 'path/to/input.txt'
-      grid = double(:grid)
-      allow(GridParser).to receive(:parse).with(filename).and_return grid
 
-      gol = GameOfLife.new(filename)
-      expect(gol.instance_variable_get(:@grid)).to eq grid
+      grid_string = <<-TEXT.strip_heredoc
+      3 3
+      ..*
+      .*.
+      *..
+      TEXT
+
+      allow(File).to receive(:read).with(filename).and_return grid_string
+
+      gol = GameOfLife.from_file(filename)
+      expect(gol.instance_variable_get(:@grid)).to be_a Grid
     end
   end
 end

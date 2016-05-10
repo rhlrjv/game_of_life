@@ -2,17 +2,14 @@ require_relative '../grid_parser.rb'
 
 RSpec.describe GridParser do
   describe ".parse" do
-    it "returns a Grid with" do
-      filename = 'path/to/file.txt'
+    it "returns a Grid from input string" do
       input_board = <<-TEXT.strip_heredoc
         2 2
         .*
         **
       TEXT
 
-      allow(File).to receive(:read).with(filename).and_return input_board
-
-      grid = GridParser.parse(filename)
+      grid = GridParser.parse(input_board)
 
       expect(grid.cell_at(0, 0)).to_not be_alive
       expect(grid.cell_at(0, 1)).to be_alive
