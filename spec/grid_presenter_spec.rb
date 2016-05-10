@@ -3,7 +3,7 @@ require_relative '../grid_presenter.rb'
 RSpec.describe GridPresenter do
   describe ".serialize" do
     it "returns a string representation of the grid" do
-      grid = Grid.new([
+      grid = Grid.from_bool_array([
         [false, true],
         [true, true],
       ])

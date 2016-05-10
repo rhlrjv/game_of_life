@@ -6,6 +6,6 @@ class GridParser
     parsed_file = lines_without_dimensions.reduce([]) do |arr, line|
       arr << line.each_char.map { |c| c == '*' }
     end
-    Grid.new(parsed_file)
+    Grid.from_bool_array(parsed_file)
   end
 end

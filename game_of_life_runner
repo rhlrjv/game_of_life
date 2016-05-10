@@ -3,4 +3,5 @@
 require_relative 'game_of_life.rb'
 
 game_of_life = GameOfLife.from_file(ARGV.shift)
+game_of_life.evolve
 puts game_of_life.serialize_grid

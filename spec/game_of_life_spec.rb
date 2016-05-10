@@ -19,4 +19,18 @@ RSpec.describe GameOfLife do
       expect(gol.instance_variable_get(:@grid)).to be_a Grid
     end
   end
+
+  describe "#evolve" do
+    it "updates the Grid with next generation" do
+      gen_0_grid = Grid.from_bool_array([[false, true],
+                                         [true, true]])
+      gen_1_grid = Grid.from_bool_array([[true, true],
+                                         [true, true]])
+
+      gol = GameOfLife.new(gen_0_grid)
+      expect { gol.evolve }.to change { gol.instance_variable_get(:@grid).to_a }
+        .from(gen_0_grid.to_a)
+        .to(gen_1_grid.to_a)
+    end
+  end
 end
