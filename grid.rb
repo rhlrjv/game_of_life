@@ -1,56 +1,58 @@
+require 'set'
 require_relative 'cell.rb'
 
 class Grid
-  def initialize(cell_array)
-    @gameboard = cell_array
+  def initialize(row_count, col_count, cells)
+    @row_count = row_count
+    @col_count = col_count
+    @cells = cells
   end
 
   def self.from_bool_array bool_array
-    cell_array = bool_array.each_with_index.map do |arr, row|
-      arr.each_with_index.map { |alive, col| Cell.new(row, col, alive) }
+    cells = Set.new
+    bool_array.each_with_index do |row, row_number|
+      row.each_with_index do |alive, col_number|
+        cells.add Cell.new(row_number, col_number, alive) if alive
+      end
     end
-    Grid.new(cell_array)
+    Grid.new(bool_array.size, bool_array[0].size, cells)
   end
 
   def cell_at(row, col)
-    @gameboard[row][col]
+    @cells.detect { |cell| cell.row == row && cell.col == col }
   end
 
   def to_a
-    @gameboard
+    arr = []
+    @row_count.times do |row|
+      row_arr = []
+      @col_count.times do |col|
+        row_arr << (cell_at(row, col) || Cell.new(row, col, false))
+      end
+      arr << row_arr
+    end
+    arr
   end
 
   def next_generation
-    cell_array = @gameboard.map do |row|
-      row.map do |cell|
-        cell.evolve(living_neighbors_count(cell.row, cell.col))
-      end
+    all_affected_cells = @cells.reduce(@cells.dup) do |acc, cell|
+      acc.merge(neighbors(cell.row, cell.col))
     end
-    Grid.new(cell_array)
+
+    cells = all_affected_cells.map do |cell|
+      cell.evolve(living_neighbors_count(cell.row, cell.col))
+    end.select(&:alive?) # TODO write test for this
+    Grid.new(@row_count, @col_count, cells.to_set)
   end
 
   private
 
-  def row_count
-    @row_count ||= @gameboard.size
-  end
-
-  def col_count
-    @col_count ||= @gameboard[0].size
-  end
-
-  def within_range?(row, col)
-    ((0...row_count).include? row )&&
-      ((0...col_count).include? col )
-  end
-
   def neighbors(row, col)
-    neighbouring_cells = []
-    for i in (row-1 .. row+1)
-      for j in (col-1 .. col+1)
-        next if !within_range?(i, j)
-        #next if [i,j] == [row, col] || !within_range?(i, j)
-        neighbouring_cells << @gameboard[i][j]
+    neighbouring_cells = Set.new
+    (row - 1..row + 1).each do |i|
+      (col - 1..col + 1).each do |j|
+        next if [i, j] == [row, col] # TODO write test for this
+        neighbouring_cells.add(cell_at(i, j) || Cell.new(i, j, false))
       end
     end
     neighbouring_cells

@@ -11,7 +11,6 @@ RSpec.describe GridParser do
 
       grid = GridParser.parse(input_board)
 
-      expect(grid.cell_at(0, 0)).to_not be_alive
       expect(grid.cell_at(0, 1)).to be_alive
       expect(grid.cell_at(1, 0)).to be_alive
       expect(grid.cell_at(1, 1)).to be_alive
