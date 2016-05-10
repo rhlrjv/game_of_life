@@ -23,9 +23,11 @@ describe Cell do
 
   describe "#==" do
     it "uses the value of alive to determine equality" do
-      expect(Cell.new(0, 0, true)).to eq Cell.new(0, 0, true)
+      expect(Cell.new(1, 2, true)).to eq Cell.new(1, 2, true)
       expect(Cell.new(0, 0, false)).to eq Cell.new(0, 0, false)
       expect(Cell.new(0, 0, true)).to_not eq Cell.new(0, 0, false)
+      expect(Cell.new(1, 2, true)).to_not eq Cell.new(1, 3, true)
+      expect(Cell.new(1, 2, true)).to_not eq Cell.new(3, 2, true)
     end
   end
 

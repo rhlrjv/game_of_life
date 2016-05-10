@@ -12,7 +12,9 @@ class Cell
   end
 
   def ==(other_cell)
-    other_cell.alive? == alive?
+    other_cell.alive? == alive? &&
+      other_cell.row == row &&
+      other_cell.col == col
   end
 
   def evolve live_neighbor_count
