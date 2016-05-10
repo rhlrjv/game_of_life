@@ -1,29 +1,37 @@
 require_relative '../cell.rb'
 
 describe Cell do
+  describe "#initialize" do
+    it "stores its coordinates" do
+      cell = Cell.new(3, 7, true)
+      expect(cell.row).to eq 3
+      expect(cell.col).to eq 7
+    end
+  end
+
   describe "#alive?" do
     context "when the cell is alive" do
-      subject { Cell.new(true) }
+      subject { Cell.new(0, 0, true) }
       specify { is_expected.to be_alive }
     end
 
     context "when the cell is not alive" do
-      subject { Cell.new(false) }
+      subject { Cell.new(0, 0, false) }
       specify { is_expected.to_not be_alive }
     end
   end
 
   describe "#==" do
     it "uses the value of alive to determine equality" do
-      expect(Cell.new(true)).to eq Cell.new(true)
-      expect(Cell.new(false)).to eq Cell.new(false)
-      expect(Cell.new(true)).to_not eq Cell.new(false)
+      expect(Cell.new(0, 0, true)).to eq Cell.new(0, 0, true)
+      expect(Cell.new(0, 0, false)).to eq Cell.new(0, 0, false)
+      expect(Cell.new(0, 0, true)).to_not eq Cell.new(0, 0, false)
     end
   end
 
   describe "#evolve" do
     context "when the cell is alive" do
-      let(:cell) { Cell.new true }
+      let(:cell) { Cell.new 0, 0, true }
 
       [2, 3].each do |num_neighbors|
         it "survives with exactly #{num_neighbors} live neighbors" do
@@ -38,7 +46,7 @@ describe Cell do
       end
     end
     context "when the cell is dead" do
-      let(:cell) { Cell.new false }
+      let(:cell) { Cell.new 0, 0, false }
 
       it "comes to life with exactly 3 neighbors" do
         expect(cell.evolve(3)).to be_alive

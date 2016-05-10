@@ -12,7 +12,7 @@ describe Grid do
 
   describe "#cell_at" do
     it "returns a cell at the coordinates" do
-      grid = Grid.new([[Cell.new(true), Cell.new(false)]])
+      grid = Grid.new([[Cell.new(0, 0, true), Cell.new(0, 1, false)]])
 
       expect(grid.cell_at(0, 0)).to be_alive
       expect(grid.cell_at(0, 1)).to_not be_alive

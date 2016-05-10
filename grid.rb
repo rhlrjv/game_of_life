@@ -6,8 +6,8 @@ class Grid
   end
 
   def self.from_bool_array bool_array
-    cell_array = bool_array.map do |arr|
-      arr.map { |b| Cell.new(b) }
+    cell_array = bool_array.each_with_index.map do |arr, row|
+      arr.each_with_index.map { |alive, col| Cell.new(row, col, alive) }
     end
     Grid.new(cell_array)
   end
@@ -21,9 +21,9 @@ class Grid
   end
 
   def next_generation
-    cell_array = @gameboard.each_with_index.map do |row, i|
-      row.each_with_index.map do |cell, j|
-        cell.evolve(living_neighbors_count(i, j))
+    cell_array = @gameboard.map do |row|
+      row.map do |cell|
+        cell.evolve(living_neighbors_count(cell.row, cell.col))
       end
     end
     Grid.new(cell_array)

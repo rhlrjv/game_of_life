@@ -1,5 +1,9 @@
 class Cell
-  def initialize alive
+  attr_reader :row, :col
+
+  def initialize row, col, alive
+    @row = row
+    @col = col
     @alive = alive
   end
 
@@ -18,7 +22,7 @@ class Cell
       live_neighbor_count == 3
     end
 
-    Cell.new(alive_in_next_gen)
+    Cell.new(row, col, alive_in_next_gen)
   end
 end
 
