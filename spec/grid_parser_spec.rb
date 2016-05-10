@@ -1,11 +1,5 @@
 require_relative '../grid_parser.rb'
 
-class String
-  def strip_heredoc
-    gsub(/^#{scan(/^[ \t]*(?=\S)/).min}/, ''.freeze)
-  end
-end
-
 RSpec.describe GridParser do
   describe ".parse" do
     it "returns a Grid with" do
