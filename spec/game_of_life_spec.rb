@@ -8,7 +8,7 @@ class String
   end
 end
 
-RSpec.describe GameOfLife, "Acceptance test", :type => :aruba do
+RSpec.describe "Acceptance test", type: :aruba do
   xit "reads a board from a file and prints out the next generation" do
     input_board = <<-TEXT.strip_heredoc
     4 8
@@ -31,5 +31,18 @@ RSpec.describe GameOfLife, "Acceptance test", :type => :aruba do
     stop_all_commands
 
     expect(last_command_started.stdout).to eq output_board
+  end
+end
+
+RSpec.describe GameOfLife do
+  describe "#initialize" do
+    it "assigns @board to parsed input file" do
+      filename = 'path/to/input.txt'
+      grid = double(:grid)
+      allow(GridParser).to receive(:parse).with(filename).and_return grid
+
+      gol = GameOfLife.new(filename)
+      expect(gol.instance_variable_get(:@board)).to eq grid
+    end
   end
 end
