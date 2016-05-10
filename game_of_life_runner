@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+require 'pry'
+require_relative 'game_of_life.rb'
+
+game_of_life = GameOfLife.new(ARGV.shift)
+puts game_of_life.serialize_grid
