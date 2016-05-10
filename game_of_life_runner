@@ -1,9 +1,18 @@
 #!/usr/bin/env ruby
 
 require_relative 'game_of_life.rb'
+require 'ruby-prof'
+
+# profile the code
+RubyProf.start
 
 game_of_life = GameOfLife.from_file(ARGV.shift)
 ARGV.shift.to_i.times do
   game_of_life.evolve
   puts game_of_life.serialize_grid
 end
+result = RubyProf.stop
+
+# print a flat profile to text
+printer = RubyProf::FlatPrinter.new(result)
+printer.print(STDOUT)
